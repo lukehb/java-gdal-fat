@@ -7,6 +7,8 @@ native into a temp directory and then loads it.
 
 Grab the uber jar [here](https://bintray.com/lukehb/gdal-fat/gdal-fat/) (hosted on Bintray):
 
+https://dl.bintray.com/lukehb/gdal-fat
+
 maven
 -----
 ```xml
