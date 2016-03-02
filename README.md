@@ -5,7 +5,7 @@ Note: It is the java bindings for gdal 1.7.2.
 The way this fat jar works is it is bundled with all the cross platform natives (about 18mb) and it extracts the relevant
 native into a temp directory and then loads it.
 
-Grab the uber jar here:
+Grab the uber jar [here](https://bintray.com/lukehb/gdal-fat/gdal-fat/) (hosted on Bintray):
 
 maven
 -----
