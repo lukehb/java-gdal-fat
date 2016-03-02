@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+apply plugin: 'com.jfrog.bintray'
+
+group 'org.gdal'
+version '1.7.2'
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java'
+    apply plugin: 'application'
+}
+
+mainClassName = "org.gdal.NativeLoader"
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+jar {
+    manifest {
+        attributes("Implementation-Title": project.name,
+                "Implementation-Version": version,
+                'Built-By': System.getProperty('user.name'),
+                'Built-Date': new Date(),
+                'Built-JDK': System.getProperty('java.version'),
+                "Main-Class": mainClassName)
+    }
+}
+
+jar.dependsOn(test)
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'org.gdal'
+            artifactId 'gdal-fat'
+            version '1.7.2'
+        }
+    }
+}
+
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.bintrayUser : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayKey') ? project.bintrayKey : System.getenv('BINTRAY_KEY')
+    publications = ['mavenJava']
+    pkg {
+        repo = 'gdal-fat'
+        name = 'gdal-fat'
+        licenses = ['MIT']
+        desc = 'An unofficial fat (uber) jar for the gdal java bindings.'
+        websiteUrl = 'https://github.com/lukehb/java-gdal-fat'
+        issueTrackerUrl = 'https://github.com/lukehb/java-gdal-fat/issues'
+        vcsUrl = 'https://github.com/lukehb/java-gdal-fat.git'
+        labels = ['gdal', 'java', 'fat', 'uber']
+        publicDownloadNumbers = true
+        githubRepo = 'lukehb/java-gdal-fat'
+        githubReleaseNotesFile = 'README.md'
+    }
+}
