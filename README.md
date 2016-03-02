@@ -5,4 +5,21 @@ Note: It is the java bindings for gdal 1.7.2.
 The way this fat jar works is it is bundled with all the cross platform natives (about 18mb) and it extracts the relevant
 native into a temp directory and then loads it.
 
-**to-do** - add links to where people can grab the fat jar.
+Grab the uber jar here:
+
+maven
+-----
+```xml
+<dependency>
+  <groupId>org.gdal</groupId>
+  <artifactId>gdal-fat</artifactId>
+  <version>1.7.2</version>
+  <type>pom</type>
+</dependency>
+```
+
+gradle
+------
+```groovy
+compile 'org.gdal:gdal-fat:1.7.2'
+```
