@@ -1,7 +1,9 @@
 package org.gdal;
 
-import org.gdal.osr.SpatialReference;
-
+import org.gdal.gdal.gdalJNI;
+import org.gdal.gdalconst.gdalconstJNI;
+import org.gdal.ogr.ogrJNI;
+import org.gdal.osr.osrJNI;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -27,36 +29,31 @@ public final class NativeLoader {
 
     public static void main(String[] args){
         load();
-        logger.info("Gdal is working: " + gdalWorking());
+        logger.info("Gdal is available: " + gdalJNI.isAvailable());
+        logger.info("GdalConst is available: " + gdalconstJNI.isAvailable());
+        logger.info("Ogr is available: " + ogrJNI.isAvailable());
+        logger.info("Osr is available: " + osrJNI.isAvailable());
     }
 
-    public static boolean gdalWorking(){
-        SpatialReference srs = new SpatialReference();
-        String proj4Input = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs".trim();
-        srs.ImportFromProj4(proj4Input);
-        String proj4Output = srs.ExportToProj4().trim();
-        return proj4Input.equals(proj4Output);
-    }
-
-    public static void load(){
+    public static boolean load(){
         String osName = System.getProperty("os.name").toLowerCase();
 
         if(osName.contains("mac")){
-            extractNativeAndLoad(osxNative);
+            return extractNativeAndLoad(osxNative);
         }
         else{
             boolean is32bit = is32bitArchitecture();
             boolean isWindows = (osName.contains("windows"));
             if(isWindows){
-                extractNativeAndLoad(is32bit ? windows32Native : windows64Native);
+                return extractNativeAndLoad(is32bit ? windows32Native : windows64Native);
             }
             else{
-                extractNativeAndLoad(is32bit ? nix32Native : nix64Native);
+                return extractNativeAndLoad(is32bit ? nix32Native : nix64Native);
             }
         }
     }
 
-    private static void extractNativeAndLoad(String nativeName){
+    private static boolean extractNativeAndLoad(String nativeName){
         logger.info("Going to try to load: " + nativeName);
         String tmpPath = System.getProperty("java.io.tmpdir");
 
@@ -64,7 +61,7 @@ public final class NativeLoader {
 
         if(nativeFileInTemp.exists()){
             logger.info("Native found at: " + nativeFileInTemp.getAbsolutePath());
-            actualNativeLoad(nativeFileInTemp);
+            return actualNativeLoad(nativeFileInTemp);
         }
         else{
             String nativeResource = "natives/" + nativeName;
@@ -83,7 +80,7 @@ public final class NativeLoader {
                                 StandardCopyOption.COPY_ATTRIBUTES);
 
                         logger.info("Native file copied into: " + nativeFileInTemp.getAbsolutePath());
-                        actualNativeLoad(nativeFileInTemp);
+                        return actualNativeLoad(nativeFileInTemp);
                     }
                     else{
                         logger.warning("Could not create temp file: " + nativeFileInTemp.getAbsolutePath());
@@ -94,19 +91,21 @@ public final class NativeLoader {
             }else{
                 logger.warning("Could not find native file URL for getResource(" + nativeResource + ")");
             }
-
         }
+        return false;
     }
 
-    private static void actualNativeLoad(File nativeFileInTemp){
+    private static boolean actualNativeLoad(File nativeFileInTemp){
         if(nativeFileInTemp != null && nativeFileInTemp.exists()){
             try{
                 System.load(nativeFileInTemp.getAbsolutePath());
                 logger.info("Loaded native: " + nativeFileInTemp.getAbsolutePath());
+                return true;
             }catch(Exception e){
                 logger.warning("Could not load native: " + e.getMessage());
             }
         }
+        return false;
     }
 
     private static boolean is32bitArchitecture()

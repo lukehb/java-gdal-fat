@@ -290,7 +290,7 @@ public class osrJNI {
     public static final native void CoordinateTransformation_TransformPoints(long var0, CoordinateTransformation var2, double[][] var3);
 
     static {
-        NativeLoader.load();
+        available = NativeLoader.load();
     }
 }
 

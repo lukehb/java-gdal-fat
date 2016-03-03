@@ -481,7 +481,7 @@ public class ogrJNI {
     public static final native Vector GeneralCmdLineProcessor__SWIG_1(Vector var0);
 
     static {
-        NativeLoader.load();
+        available = NativeLoader.load();
     }
 }
 

@@ -220,7 +220,7 @@ public class gdalconstJNI {
     public static final native int GMF_NODATA_get();
 
     static {
-        NativeLoader.load();
+        available = NativeLoader.load();
     }
 }
 

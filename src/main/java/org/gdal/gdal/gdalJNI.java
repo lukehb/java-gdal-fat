@@ -833,7 +833,7 @@ public class gdalJNI {
     public static final native long Band_SWIGUpcast(long var0);
 
     static {
-        NativeLoader.load();
+        available = NativeLoader.load();
     }
 }
 
