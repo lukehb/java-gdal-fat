@@ -9,19 +9,4 @@ Grab the uber jar [here](https://bintray.com/lukehb/gdal-fat/gdal-fat/) (hosted 
 
 https://dl.bintray.com/lukehb/gdal-fat
 
-maven
------
-```xml
-<dependency>
-  <groupId>org.gdal</groupId>
-  <artifactId>gdal-fat</artifactId>
-  <version>1.7.2</version>
-  <type>pom</type>
-</dependency>
-```
-
-gradle
-------
-```groovy
-compile 'org.gdal:gdal-fat:1.7.2'
-```
+[ ![Download](https://api.bintray.com/packages/lukehb/gdal-fat/gdal-fat/images/download.svg) ](https://bintray.com/lukehb/gdal-fat/gdal-fat/_latestVersion)
