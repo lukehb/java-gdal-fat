@@ -26,7 +26,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-ext.moduleName = 'gdal-fat'
+ext.moduleName = 'org.gdal'
 mainClassName = 'org.gdal.NativeLoader'
 sourceCompatibility = 1.9
 
